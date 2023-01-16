@@ -8,7 +8,7 @@ I tried to copy a part of this (https://www.google.com/finance/) page.
 
 I use the next technologies:
 - React
-- Redux toolkit(with Redux-Thunk)
+- Redux toolkit
 - Socket.io - to connect to the service
 - pure CSS
 
