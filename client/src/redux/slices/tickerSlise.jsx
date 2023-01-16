@@ -1,18 +1,5 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import openSocket from "socket.io-client";
+import { createSlice } from "@reduxjs/toolkit";
 
-
-export const getItems = createAsyncThunk("ticker/getItemsStatus", () => {
-    const socket = openSocket("http://localhost:4000");
-    socket.emit("start");
-    socket.on("ticker", function (response) {
-      const res = response.filter(
-        (item) => !initialState.deletedItems.includes(item.ticker)
-      );
-      console.log(res);
-      return res;
-    });
-  });
 
 const initialState = {
   items: [],
@@ -25,24 +12,10 @@ export const tickerSlise = createSlice({
   initialState,
   reducers: {
     setItems: (state, action) => {
-      state.items = action.payload;
+      state.items = action.payload.filter((item) => !state.deletedItems.includes(item.ticker));
     },
     setDeletedItems: (state, action) => {
       state.deletedItems = action.payload;
-    },
-  },
-  extraReducers: {
-    [getItems.fulfilled]: (state, action) => {
-      state.items = action.payload;
-      state.status = "success";
-    },
-    [getItems.pending]: (state) => {
-      state.status = "loading";
-      state.items = [];
-    },
-    [getItems.rejected]: (state) => {
-      state.status = "error";
-      state.items = [];
     },
   },
 });
